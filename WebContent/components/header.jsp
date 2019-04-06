@@ -20,7 +20,7 @@
       <ul class="nav navbar-nav">
         <!-- 購入申請書作成 -->
         <c:choose>
-          <c:when test="${param.pageTitle == 'index'}">
+          <c:when test="${param.pageTitle == 'applicationForm'}">
             <li class="active">
               <a href="applicationForm"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 購入申請書作成</a>
             </li>
@@ -34,7 +34,7 @@
 
         <!-- 購入履歴参照 -->
         <c:choose>
-          <c:when test="${param.pageTitle == 'applicationForm'}">
+          <c:when test="${param.pageTitle == 'historyView'}">
             <li class="active">
               <a href="historyView"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 購入履歴参照</a>
             </li>
