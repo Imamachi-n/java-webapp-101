@@ -44,8 +44,8 @@
       <div class="row">
         <div class="col-lg-3">
           <div class="form-group">
-            <label for="catId">社員番号</label>
-            <input class="form-control" type="text" id="catId" size="4" placeholder="例）0343" />
+            <label for="catId">品名</label>
+            <input class="form-control" type="text" id="catId" size="4" placeholder="例）コーヒー" />
           </div>
         </div>
       </div>
@@ -53,8 +53,8 @@
       <div class="row">
         <div class="col-lg-3">
           <div class="form-group">
-            <label for="catId">OA番号</label>
-            <input class="form-control" type="text" id="itemName" size="7" placeholder="例）0250417" />
+            <label for="catId">品番・色</label>
+            <input class="form-control" type="text" id="itemName" size="7" placeholder="例）ネイビー" />
           </div>
         </div>
       </div>
@@ -62,15 +62,15 @@
       <div class="row">
         <div class="col-lg-3">
           <div class="form-group">
-            <label for="catId">氏名（漢字）</label>
-            <input class="form-control" type="text" id="catId" size="40" placeholder="例）山田　太郎" />
+            <label for="catId">ASKUL申込番号</label>
+            <input class="form-control" type="text" id="catId" size="40" placeholder="例）123456789" />
           </div>
         </div>
 
         <div class="col-lg-3">
           <div class="form-group">
-            <label for="catId">氏名（カナ）</label>
-            <input class="form-control" type="text" id="itemName" size="40" placeholder="例）ヤマダ　タロウ" />
+            <label for="catId">カタログページ数</label>
+            <input class="form-control" type="text" id="itemName" size="40" placeholder="例）343" />
           </div>
         </div>
       </div>
@@ -78,15 +78,8 @@
       <div class="row">
         <div class="col-lg-3">
           <div class="form-group">
-            <label for="catId">部署</label>
-            <input class="form-control" type="text" id="catId" size="40" placeholder="例）システム開発部" />
-          </div>
-        </div>
-
-        <div class="col-lg-3">
-          <div class="form-group">
-            <label for="catId">所属グループ</label>
-            <input class="form-control" type="text" id="itemName" size="40" placeholder="例）SIG" />
+            <label for="catId">単価</label>
+            <input class="form-control" type="text" id="itemName" size="40" placeholder="例）1200" />
           </div>
         </div>
       </div>
