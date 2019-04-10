@@ -5,26 +5,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import connection.ConnectionManager;
-import dto.Test;
+import dao.EmployeeDAO;
 
 public class EmployeeMstBL {
 
-	/*
-	 * カテゴリとキーワードによる商品検索
-	 * メソッド名：商品の検索
-	 * 引数：カテゴリ名、キーワード 戻り値：検索結果
-	 */
-	public ArrayList<Test> selectProducts(String category, String keyword) {
+	// 社員情報の検索
+	public ArrayList<String> searchEmpolyees() {
 		Connection con = null;
-		ArrayList<Test> array = new ArrayList<>();
+		ArrayList<String> employeeInfo = new ArrayList<>();
 
 		try {
+			// DBへの接続
 			ConnectionManager cm = ConnectionManager.getConnectionManager();
 			con = cm.getConnection();
 
-//			SearchDAO dao = new SearchDAO(con);
+			// 社員情報の取得
+			EmployeeDAO dao = new EmployeeDAO(con);
+			employeeInfo = dao.searchEmpolyees();
 
-//			array = dao.selectProducts(category, keyword);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -36,6 +34,6 @@ public class EmployeeMstBL {
 				e.printStackTrace();
 			}
 		}
-		return array;
+		return employeeInfo;
 	}
 }

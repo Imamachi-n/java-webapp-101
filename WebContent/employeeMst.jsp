@@ -43,6 +43,24 @@
 
     <!-- 入力フォーム -->
     <form method="post" action="employee">
+      <!-- 処理の選択 -->
+      <button type="submit" class="btn btn-primary">一覧表示</button>
+
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="form-group">
+            <label for="catId">社員 - 選択</label>
+            <select class="form-control" name="questionnaireId" id="questionTitle">
+              <c:forEach items="${ departmentList }" var="department">
+                <option>
+                  <c:out value="${department}" />
+                </option>
+              </c:forEach>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-lg-3">
           <div class="form-group">
@@ -104,6 +122,9 @@
 
       <button type="submit" class="btn btn-primary">登録する</button>
       <button type="reset" class="btn btn-light">リセット</button>
+
+      <button type="submit" class="btn btn-primary">更新する</button>
+      <button type="submit" class="btn btn-danger">削除する</button>
     </form>
   </div>
 

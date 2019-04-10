@@ -32,6 +32,13 @@ public class EmployeeMstServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		// 社員ビジネスロジックのインスタンス化
+		EmployeeMstBL bl = new EmployeeMstBL();
+
+		// 社員情報の取得
+		ArrayList<String> employeeInfo = bl.searchEmpolyees();
+		request.setAttribute("employeeInfo", employeeInfo);
+
 		// 社員マスタページへ遷移
 		ArrayList<String> departmentList = new ArrayList<>();
 		departmentList.add("システム開発部");
@@ -48,8 +55,7 @@ public class EmployeeMstServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		EmployeeMstBL bl = new EmployeeMstBL();
-		bl.selectProducts("", "");
+
 	}
 
 }
