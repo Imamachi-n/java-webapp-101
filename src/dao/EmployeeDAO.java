@@ -38,6 +38,6 @@ public class EmployeeDAO {
 
 	// 社員情報の登録
 	public boolean registerEmployee() {
-
+		return true;
 	}
 }
