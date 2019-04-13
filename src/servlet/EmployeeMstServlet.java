@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bl.EmployeeMstBL;
+import dto.Employee;
+import form.EmployeeForm;
 
 /**
  * Servlet implementation class EmployeeMstServlet
@@ -23,7 +25,6 @@ public class EmployeeMstServlet extends HttpServlet {
 	 */
 	public EmployeeMstServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -32,19 +33,23 @@ public class EmployeeMstServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		// 社員ビジネスロジックのインスタンス化
 		EmployeeMstBL bl = new EmployeeMstBL();
+		// 社員フォームクラスのインスタンス化
+		EmployeeForm employeeForm = new EmployeeForm();
 
 		// 社員情報の取得
 		ArrayList<String> employeeInfo = bl.searchEmpolyees();
 		request.setAttribute("employeeInfo", employeeInfo);
 
-		// 社員マスタページへ遷移
-		ArrayList<String> departmentList = new ArrayList<>();
-		departmentList.add("システム開発部");
-		departmentList.add("ラボシステム部");
-		request.setAttribute("departmentList", departmentList);
+		// 部署の取得
+		request.setAttribute("departmentList", employeeForm.getDepartmentList());
 
+		// グループの取得
+		request.setAttribute("groupList", employeeForm.getGroupList());
+
+		// 社員マスタページへ遷移
 		request.getRequestDispatcher("employeeMst.jsp").forward(request, response);
 	}
 
@@ -54,8 +59,40 @@ public class EmployeeMstServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 
+		// 社員ビジネスロジックのインスタンス化
+		EmployeeMstBL bl = new EmployeeMstBL();
+		// 社員フォームクラスのインスタンス化
+		EmployeeForm employeeForm = new EmployeeForm();
+
+		// 部署の取得
+		request.setAttribute("departmentList", employeeForm.getDepartmentList());
+
+		// グループの取得
+		request.setAttribute("groupList", employeeForm.getGroupList());
+
+		String execution = request.getParameter("execute");
+		if (execution == null) {
+			// TODO: ERROR
+
+		} else if (execution.equals("register")) {
+			// 値の取得
+			Employee employee = new Employee();
+			employee.setEmployee(request.getParameter("employeeId"));
+			employee.setOano(request.getParameter("oano"));
+
+			// バリデータによる値のチェック
+
+
+
+			bl.registerEmpolyee(employee);
+			System.out.println("OK");
+		}
+
+		// ボタン切り替えフラグを立てる
+		request.setAttribute("editFlg", true);
+
+		// 社員マスタページへ遷移
+		request.getRequestDispatcher("employeeMst.jsp").forward(request, response);
 	}
-
 }

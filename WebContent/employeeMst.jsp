@@ -1,20 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+pageEncoding="UTF-8"%> <%@ taglib prefix="c"
+uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
   <title>物品管理システム - 社員マスタ</title>
 
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/base.css" />
 
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,10 +50,10 @@
         <div class="col-lg-3">
           <div class="form-group">
             <label for="catId">社員 - 選択</label>
-            <select class="form-control" name="questionnaireId" id="questionTitle">
-              <c:forEach items="${ departmentList }" var="department">
+            <select class="form-control" name="employeeName" id="employeeName">
+              <c:forEach items="${ employeeInfo }" var="employee">
                 <option>
-                  <c:out value="${department}" />
+                  <c:out value="${employee}" />
                 </option>
               </c:forEach>
             </select>
@@ -65,7 +65,7 @@
         <div class="col-lg-3">
           <div class="form-group">
             <label for="catId">社員番号</label>
-            <input class="form-control" type="text" id="catId" size="4" placeholder="例）0343" />
+            <input class="form-control" type="text" id="employeeId" size="4" placeholder="例）0343" />
           </div>
         </div>
       </div>
@@ -74,7 +74,7 @@
         <div class="col-lg-3">
           <div class="form-group">
             <label for="catId">OA番号</label>
-            <input class="form-control" type="text" id="itemName" size="7" placeholder="例）0250417" />
+            <input class="form-control" type="text" id="oano" size="7" placeholder="例）0250417" />
           </div>
         </div>
       </div>
@@ -99,7 +99,7 @@
         <div class="col-lg-3">
           <div class="form-group">
             <label for="catId">部署</label>
-            <select class="form-control" name="questionnaireId" id="questionTitle">
+            <select class="form-control" name="department" id="department">
               <c:forEach items="${ departmentList }" var="department">
                 <option>
                   <c:out value="${department}" />
@@ -112,19 +112,29 @@
         <div class="col-lg-3">
           <div class="form-group">
             <label for="catId">所属グループ</label>
-            <select class="form-control" name="questionnaireId2" id="questionTitle2">
-              <option>システム</option>
-              <option>システム</option>
+            <select class="form-control" name="group" id="group">
+              <c:forEach items="${ groupList }" var="group">
+                <option>
+                  <c:out value="${group}" />
+                </option>
+              </c:forEach>
             </select>
           </div>
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary">登録する</button>
-      <button type="reset" class="btn btn-light">リセット</button>
-
-      <button type="submit" class="btn btn-primary">更新する</button>
-      <button type="submit" class="btn btn-danger">削除する</button>
+      <c:choose>
+        <c:when test="${not empty editFlg and editFlg}">
+          <button type="submit" class="btn btn-primary">更新する</button>
+          <button type="submit" class="btn btn-danger">削除する</button>
+        </c:when>
+        <c:otherwise>
+          <button type="submit" class="btn btn-primary" name="execute" value="register">
+            登録する
+          </button>
+          <button type="reset" class="btn btn-light">リセット</button>
+        </c:otherwise>
+      </c:choose>
     </form>
   </div>
 
