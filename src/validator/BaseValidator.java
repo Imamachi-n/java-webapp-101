@@ -2,6 +2,11 @@ package validator;
 
 import java.io.UnsupportedEncodingException;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class BaseValidator {
 
 	// エラー有無
@@ -10,11 +15,18 @@ public class BaseValidator {
 	// エラーメッセージ
 	private String errorMessage;
 
+	// コンストラクタ
+	public BaseValidator() {
+		this.errorMessage = "";
+	}
+
 	// 桁数チェック
-	public boolean checkByte(String str, int maxBytes) throws UnsupportedEncodingException {
+	public boolean checkByte(String str, int maxBytes, String errorMsg) throws UnsupportedEncodingException {
 
 		// Nullチェック
 		if(str == null || str.length() == 0) {
+			this.setErrorMessage(this.getErrorMessage() + errorMsg + "\n");
+			this.setHasError(true);
 			return false;
 		}
 
@@ -25,6 +37,8 @@ public class BaseValidator {
 
 		}else {
 			// バイト数が最大値を超える場合、Falseを返す
+			this.setErrorMessage(this.getErrorMessage() + errorMsg + "\n");
+			this.setHasError(true);
 			return false;
 
 		}

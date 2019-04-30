@@ -32,24 +32,25 @@ public class EmployeeMstServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 
-		// 社員ビジネスロジックのインスタンス化
-		EmployeeMstBL bl = new EmployeeMstBL();
-		// 社員フォームクラスのインスタンス化
-		EmployeeForm employeeForm = new EmployeeForm();
+		// インスタンス化
+		EmployeeMstBL bl = new EmployeeMstBL();				// 社員ビジネスロジックのインスタンス化
+		EmployeeForm employeeForm = new EmployeeForm();	// 社員フォームクラスのインスタンス化
 
-		// 社員情報の取得
-		ArrayList<String> employeeInfo = bl.searchEmpolyees();
-		request.setAttribute("employeeInfo", employeeInfo);
+		try {
+			// コンボボックスのデータ取得
+			initComboBox(request, bl, employeeForm);
 
-		// 部署の取得
-		request.setAttribute("departmentList", employeeForm.getDepartmentList());
+			// フォームの初期化
+			initEmployeeForm(request);
 
-		// グループの取得
-		request.setAttribute("groupList", employeeForm.getGroupList());
+			// 社員マスタページへ遷移
+			request.getRequestDispatcher("employeeMst.jsp").forward(request, response);
 
-		// 社員マスタページへ遷移
-		request.getRequestDispatcher("employeeMst.jsp").forward(request, response);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -58,22 +59,15 @@ public class EmployeeMstServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+
+		// インスタンス化
+		EmployeeMstBL bl = new EmployeeMstBL();				// 社員ビジネスロジックのインスタンス化
+		EmployeeForm employeeForm = new EmployeeForm();	// 社員フォームクラスのインスタンス化
 
 		try {
-			// 社員ビジネスロジックのインスタンス化
-			EmployeeMstBL bl = new EmployeeMstBL();
-			// 社員フォームクラスのインスタンス化
-			EmployeeForm employeeForm = new EmployeeForm();
-
-			// 社員情報の取得
-			ArrayList<String> employeeInfo = bl.searchEmpolyees();
-			request.setAttribute("employeeInfo", employeeInfo);
-
-			// 部署の取得
-			request.setAttribute("departmentList", employeeForm.getDepartmentList());
-
-			// グループの取得
-			request.setAttribute("groupList", employeeForm.getGroupList());
+			// コンボボックスのデータ取得
+			initComboBox(request, bl, employeeForm);
 
 			String execution = request.getParameter("execute");
 			if (execution == null) {
@@ -100,9 +94,10 @@ public class EmployeeMstServlet extends HttpServlet {
 
 				// バリデータによる値のチェック
 				if (!employeeForm.validateInputData()) {
+					// エラーメッセージ
+					request.setAttribute("errorMsg", employeeForm.getErrorMessage());
 					// 値渡し
-					request.setAttribute("employeeId", request.getParameter("employeeId"));
-					request.setAttribute("oano", request.getParameter("oano"));
+					setEmployeeForm(request);
 
 					// 社員マスタページへ遷移
 					request.getRequestDispatcher("employeeMst.jsp").forward(request, response);
@@ -110,9 +105,9 @@ public class EmployeeMstServlet extends HttpServlet {
 
 				}
 
-
-	//			bl.registerEmpolyee(employeeForm);
+				bl.registerEmpolyee(employeeForm);
 				System.out.println("OK");
+
 			} else if (execution.equals("update")) {
 				// 更新時
 
@@ -130,5 +125,40 @@ public class EmployeeMstServlet extends HttpServlet {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	// Request値渡し
+	protected void setEmployeeForm(HttpServletRequest request) {
+
+		request.setAttribute("employeeId", request.getParameter("employeeId"));
+		request.setAttribute("oano", request.getParameter("oano"));
+		request.setAttribute("employeeNameKanji", request.getParameter("employeeNameKanji"));
+		request.setAttribute("employeeNameKana", request.getParameter("employeeNameKana"));
+		request.setAttribute("department", request.getParameter("department"));
+		request.setAttribute("group", request.getParameter("group"));
+
+	}
+
+	// フォームの初期化
+	protected void initEmployeeForm(HttpServletRequest request) {
+
+		request.setAttribute("employeeId", "");
+		request.setAttribute("oano", "");
+		request.setAttribute("employeeNameKanji", "");
+		request.setAttribute("employeeNameKana", "");
+		request.setAttribute("department", "");
+		request.setAttribute("group", "");
+
+	}
+
+	// コンボボックスの初期化
+	protected void initComboBox(HttpServletRequest request, EmployeeMstBL bl, EmployeeForm employeeForm) {
+
+		// コンボボックスのデータ取得
+		ArrayList<String> employeeInfo = bl.searchEmpolyees();
+		request.setAttribute("employeeInfo", employeeInfo);							// 社員情報の取得
+		request.setAttribute("departmentList", employeeForm.getDepartmentList());	// 部署の取得
+		request.setAttribute("groupList", employeeForm.getGroupList());				// グループの取得
+
 	}
 }

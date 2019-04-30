@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import connection.ConnectionManager;
 import dao.EmployeeDAO;
-import dto.Employee;
+import form.EmployeeForm;
 
 public class EmployeeMstBL {
 
@@ -40,7 +40,7 @@ public class EmployeeMstBL {
 	}
 
 	// 社員情報の登録
-		public boolean registerEmpolyee(Employee employee) {
+		public boolean registerEmpolyee(EmployeeForm employeeForm) {
 			Connection con = null;
 			boolean result = false;
 
@@ -51,7 +51,7 @@ public class EmployeeMstBL {
 
 				// 社員情報の取得
 				EmployeeDAO dao = new EmployeeDAO(con);
-				result = dao.registerEmployee(employee);
+				result = dao.registerEmployee(employeeForm);
 
 			} catch (Exception e) {
 				e.printStackTrace();

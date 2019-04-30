@@ -22,6 +22,8 @@ public class EmployeeForm extends BaseValidator {
 
 	// コンストラクタ
 	public EmployeeForm() {
+		super();
+
 		this.departmentList = new ArrayList<>();
 		this.departmentList.add("システム開発部");
 		this.departmentList.add("ラボシステム部");
@@ -37,12 +39,13 @@ public class EmployeeForm extends BaseValidator {
 
 		try {
 			// バイト数チェック
-			if(!checkByte(this.getEmployee(), 4)) return false;
-			if(!checkByte(this.getOano(), 7)) return false;
-			if(!checkByte(this.getNameKanji(), 22)) return false;
-			if(!checkByte(this.getNamekana(), 21)) return false;
-			if(!checkByte(this.getDepartment(), 20)) return false;
-			if(!checkByte(this.getGroup(), 30)) return false;
+			checkByte(this.getEmployee(), 4, "社員番号は半角4文字以内で入力してください。");
+			checkByte(this.getOano(), 7, "OA番号は半角7文字以内で入力してください。");
+			checkByte(this.getNameKanji(), 22, "氏名（漢字）は全角11文字以内で入力してください。");
+			checkByte(this.getNamekana(), 21, "氏名（カナ）は半角21文字以内で入力してください。");
+			checkByte(this.getDepartment(), 20, "部署は全角10文字以内で入力してください。");
+			checkByte(this.getGroup(), 30, "グループ名は全角15文字以内で入力してください。");
+			if(this.isHasError()) return false;
 
 			return true;
 
