@@ -64,7 +64,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       <div class="row">
         <div class="col-lg-3">
           <div class="form-group">
-            <label for="catId">社員番号</label>
+            <label for="employeeId">社員番号</label>
             <input class="form-control" type="text" id="employeeId" size="4" placeholder="例）0343" />
           </div>
         </div>
@@ -73,8 +73,8 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       <div class="row">
         <div class="col-lg-3">
           <div class="form-group">
-            <label for="catId">OA番号</label>
-            <input class="form-control" type="text" id="oano" size="7" placeholder="例）0250417" />
+            <label for="oano">OA番号</label>
+            <input class="form-control" type="text" id="oano" name="oano" size="7" placeholder="例）0250417" />
           </div>
         </div>
       </div>
@@ -82,15 +82,15 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       <div class="row">
         <div class="col-lg-3">
           <div class="form-group">
-            <label for="catId">氏名（漢字）</label>
-            <input class="form-control" type="text" id="catId" size="40" placeholder="例）山田　太郎" />
+            <label for="employeeNameKanji">氏名（漢字）</label>
+            <input class="form-control" type="text" id="employeeNameKanji" size="40" placeholder="例）山田　太郎" />
           </div>
         </div>
 
         <div class="col-lg-3">
           <div class="form-group">
-            <label for="catId">氏名（カナ）</label>
-            <input class="form-control" type="text" id="itemName" size="40" placeholder="例）ヤマダ　タロウ" />
+            <label for="employeeNameKana">氏名（カナ）</label>
+            <input class="form-control" type="text" id="employeeNameKana" size="40" placeholder="例）ヤマダ　タロウ" />
           </div>
         </div>
       </div>
@@ -98,7 +98,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       <div class="row">
         <div class="col-lg-3">
           <div class="form-group">
-            <label for="catId">部署</label>
+            <label for="department">部署</label>
             <select class="form-control" name="department" id="department">
               <c:forEach items="${ departmentList }" var="department">
                 <option>
@@ -111,7 +111,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
 
         <div class="col-lg-3">
           <div class="form-group">
-            <label for="catId">所属グループ</label>
+            <label for="group">所属グループ</label>
             <select class="form-control" name="group" id="group">
               <c:forEach items="${ groupList }" var="group">
                 <option>

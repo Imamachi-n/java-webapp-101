@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bl.EmployeeMstBL;
-import dto.Employee;
 import form.EmployeeForm;
 
 /**
@@ -60,39 +59,76 @@ public class EmployeeMstServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		// 社員ビジネスロジックのインスタンス化
-		EmployeeMstBL bl = new EmployeeMstBL();
-		// 社員フォームクラスのインスタンス化
-		EmployeeForm employeeForm = new EmployeeForm();
+		try {
+			// 社員ビジネスロジックのインスタンス化
+			EmployeeMstBL bl = new EmployeeMstBL();
+			// 社員フォームクラスのインスタンス化
+			EmployeeForm employeeForm = new EmployeeForm();
 
-		// 部署の取得
-		request.setAttribute("departmentList", employeeForm.getDepartmentList());
+			// 社員情報の取得
+			ArrayList<String> employeeInfo = bl.searchEmpolyees();
+			request.setAttribute("employeeInfo", employeeInfo);
 
-		// グループの取得
-		request.setAttribute("groupList", employeeForm.getGroupList());
+			// 部署の取得
+			request.setAttribute("departmentList", employeeForm.getDepartmentList());
 
-		String execution = request.getParameter("execute");
-		if (execution == null) {
-			// TODO: ERROR
+			// グループの取得
+			request.setAttribute("groupList", employeeForm.getGroupList());
 
-		} else if (execution.equals("register")) {
-			// 値の取得
-			Employee employee = new Employee();
-			employee.setEmployee(request.getParameter("employeeId"));
-			employee.setOano(request.getParameter("oano"));
+			String execution = request.getParameter("execute");
+			if (execution == null) {
+				// エラー発生時
+				// TODO: ERROR
 
-			// バリデータによる値のチェック
+			} else if (execution.equals("list")) {
+				// 一覧表示時
+				System.out.println("OK!");
+
+			} else if (execution.equals("select")) {
+				// 社員選択時
+
+			} else if (execution.equals("register")) {
+				// 登録時
+
+				// 値の取得
+				employeeForm.setEmployee(request.getParameter("employeeId"));
+				employeeForm.setOano(request.getParameter("oano"));
+				employeeForm.setNameKanji(request.getParameter("employeeNameKanji"));
+				employeeForm.setNamekana(request.getParameter("employeeNameKana"));
+				employeeForm.setDepartment(request.getParameter("department"));
+				employeeForm.setGroup(request.getParameter("group"));
+
+				// バリデータによる値のチェック
+				if (!employeeForm.validateInputData()) {
+					// 値渡し
+					request.setAttribute("employeeId", request.getParameter("employeeId"));
+					request.setAttribute("oano", request.getParameter("oano"));
+
+					// 社員マスタページへ遷移
+					request.getRequestDispatcher("employeeMst.jsp").forward(request, response);
+					return;
+
+				}
 
 
+	//			bl.registerEmpolyee(employeeForm);
+				System.out.println("OK");
+			} else if (execution.equals("update")) {
+				// 更新時
 
-			bl.registerEmpolyee(employee);
-			System.out.println("OK");
+			} else if (execution.equals("delete")) {
+				// 削除時
+
+			}
+
+			// ボタン切り替えフラグを立てる
+			request.setAttribute("editFlg", true);
+
+			// 社員マスタページへ遷移
+			request.getRequestDispatcher("employeeMst.jsp").forward(request, response);
+
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
-
-		// ボタン切り替えフラグを立てる
-		request.setAttribute("editFlg", true);
-
-		// 社員マスタページへ遷移
-		request.getRequestDispatcher("employeeMst.jsp").forward(request, response);
 	}
 }

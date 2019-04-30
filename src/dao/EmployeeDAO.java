@@ -55,10 +55,10 @@ public class EmployeeDAO {
 			pStmt.setString(2, employee.getOano());
 			pStmt.setString(3, employee.getSei());
 			pStmt.setString(4, employee.getMei());
-			pStmt.setString(5, employee.getName());
-			pStmt.setString(6, employee.getNamek());
-			pStmt.setString(7, employee.getBu());
-			pStmt.setString(8, employee.getGr());
+			pStmt.setString(5, employee.getNameKanji());
+			pStmt.setString(6, employee.getNamekana());
+			pStmt.setString(7, employee.getDepartment());
+			pStmt.setString(8, employee.getGroup());
 			LocalDateTime ldt = LocalDateTime.now();
 			DateTimeFormatter currentDate = DateTimeFormatter.ofPattern("yyyyMMdd");
 			DateTimeFormatter currentTime = DateTimeFormatter.ofPattern("HHmmss");
