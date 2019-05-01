@@ -149,7 +149,11 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>あ</td>
+                  <td>
+                    <label style="margin: 0;">
+                     <input type="checkbox" class="checkbox" value="checkboxA">
+                    </label>
+                  </td>
                   <td>1</td>
                   <td>ベージュ</td>
                   <td>123456789</td>
@@ -159,7 +163,11 @@
                   <td>2400</td>
                 </tr>
                 <tr>
-                  <td>あ</td>
+                  <td>
+                     <label style="margin: 0;">
+                      <input type="checkbox" value="checkboxA">
+                    </label>
+                  </td>
                   <td>1</td>
                   <td>ベージュ</td>
                   <td>123456789</td>

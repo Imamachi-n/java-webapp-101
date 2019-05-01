@@ -71,7 +71,7 @@
       <div class="row">
         <div class="col-lg-3">
           <div class="checkbox">
-            <label>
+            <label style="margin-bottom: 10px;">
               <input type="checkbox"> 削除含む
             </label>
           </div>

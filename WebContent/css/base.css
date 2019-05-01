@@ -1,21 +1,21 @@
 @font-face {
     font-family: KosugiMaru;
-    src:url(../fonts/KosugiMaru-Regular.ttf) format("truetype");
+    src: url(../fonts/KosugiMaru-Regular.ttf) format("truetype");
 }
 
 @font-face {
     font-family: KosugiMaru4IE;
-    src:url(../fonts/KosugiMaru-Regular.eot)
+    src: url(../fonts/KosugiMaru-Regular.eot)
 }
 
 @font-face {
     font-family: OpenSans;
-    src:url(../fonts/OpenSans-Regular.ttf) format("truetype");
+    src: url(../fonts/OpenSans-Regular.ttf) format("truetype");
 }
 
 @font-face {
     font-family: OpenSans4IE;
-    src:url(../fonts/OpenSans-Regular.eot)
+    src: url(../fonts/OpenSans-Regular.eot)
 }
 
 body {
@@ -24,10 +24,10 @@ body {
     transform: rotate(0.001deg);
 }
 
-.gi-2x{
-	font-size: 25px !important;
+.gi-2x {
+    font-size: 25px !important;
 }
 
-.gi-5x{
-	font-size: 100px !important;
+.gi-5x {
+    font-size: 100px !important;
 }
