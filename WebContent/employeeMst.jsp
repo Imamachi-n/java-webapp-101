@@ -192,7 +192,6 @@ uri="http://java.sun.com/jsp/jstl/core"%>
             >
               登録する
             </button>
-            <button type="reset" class="btn btn-light">リセット</button>
           </c:otherwise>
         </c:choose>
       </form>

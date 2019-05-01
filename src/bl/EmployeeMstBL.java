@@ -6,9 +6,12 @@ import java.util.ArrayList;
 
 import connection.ConnectionManager;
 import dao.EmployeeDAO;
+import dto.Employee;
 import form.EmployeeForm;
 
 public class EmployeeMstBL {
+
+	public final static String DEFAULT_ITEM = "--- 社員を選択 ---";
 
 	// 社員情報の検索
 	public ArrayList<String> searchEmpolyees() {
@@ -23,7 +26,7 @@ public class EmployeeMstBL {
 			// 社員情報の取得
 			EmployeeDAO dao = new EmployeeDAO(con);
 			employeeInfo = dao.searchEmpolyees();
-			employeeInfo.add(0, "--- 社員を選択 ---");
+			employeeInfo.add(0, DEFAULT_ITEM);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -39,6 +42,40 @@ public class EmployeeMstBL {
 		}
 		return employeeInfo;
 	}
+
+	// 社員情報の検索
+		public EmployeeForm searchEmpolyeeById(String employeeInfo) {
+			Connection con = null;
+			EmployeeForm employeeForm = new EmployeeForm();
+
+			try {
+				// DBへの接続
+				ConnectionManager cm = ConnectionManager.getConnectionManager();
+				con = cm.getConnection();
+
+				// 社員情報の取得
+				EmployeeDAO dao = new EmployeeDAO(con);
+				Employee employee = dao.searchEmpolyeeById(employeeInfo.split(" ")[0], employeeForm);
+
+				// フォームオブジェクトへのマッピング
+				employeeForm.mapSQLResult(employee);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				employeeForm.getErrorMessage().add("DB接続時に予期せぬエラーが発生しました。");
+
+			} finally {
+				try {
+					if (con != null) {
+						con.close();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+					employeeForm.getErrorMessage().add("DB切断時に予期せぬエラーが発生しました。");
+				}
+			}
+			return employeeForm;
+		}
 
 	// 社員情報の登録
 		public boolean registerEmpolyee(EmployeeForm employeeForm) {
@@ -56,6 +93,7 @@ public class EmployeeMstBL {
 
 			} catch (Exception e) {
 				e.printStackTrace();
+				employeeForm.getErrorMessage().add("DB接続時に予期せぬエラーが発生しました。");
 				result = false;
 
 			} finally {
@@ -65,6 +103,7 @@ public class EmployeeMstBL {
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
+					employeeForm.getErrorMessage().add("DB切断時に予期せぬエラーが発生しました。");
 					result = false;
 				}
 			}

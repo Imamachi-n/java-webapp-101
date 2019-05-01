@@ -83,9 +83,20 @@ public class EmployeeMstServlet extends HttpServlet {
 
 					// 社員選択時
 					case "select":
-						request.setAttribute("employeeName", request.getParameter("employeeName"));
-						// ボタン切り替えフラグを立てる
-						request.setAttribute("editFlg", true);
+						// 社員情報の取得
+						String employeeName = request.getParameter("employeeName");
+						employeeForm = bl.searchEmpolyeeById(employeeName);
+
+						// 社員情報の取得時にエラーが発生した場合
+						if (employeeForm.getErrorMessage().size() > 0) break;
+
+						// 値渡し
+						request.setAttribute("employeeName", employeeName);
+						setAttributeFromEmployeeForm(request, employeeForm);
+
+						// ボタン切り替えフラグを立てる(デフォルト値でない場合)
+						if(!employeeName.equals(EmployeeMstBL.DEFAULT_ITEM)) request.setAttribute("editFlg", true);
+
 						break;
 
 					// 登録時
@@ -95,6 +106,8 @@ public class EmployeeMstServlet extends HttpServlet {
 
 						// バリデータによる値のチェック
 						if (!employeeForm.validateInputData()) break;
+
+						// 登録
 						if (!bl.registerEmpolyee(employeeForm)) break;
 						break;
 
@@ -120,14 +133,14 @@ public class EmployeeMstServlet extends HttpServlet {
 	}
 
 	// Request値渡し
-	protected void setEmployeeForm(HttpServletRequest request) {
+	protected void setAttributeFromEmployeeForm(HttpServletRequest request, EmployeeForm employeeForm) {
 
-		request.setAttribute("employeeId", request.getParameter("employeeId"));
-		request.setAttribute("oano", request.getParameter("oano"));
-		request.setAttribute("employeeNameKanji", request.getParameter("employeeNameKanji"));
-		request.setAttribute("employeeNameKana", request.getParameter("employeeNameKana"));
-		request.setAttribute("department", request.getParameter("department"));
-		request.setAttribute("group", request.getParameter("group"));
+		request.setAttribute("employeeId", employeeForm.getEmployee());
+		request.setAttribute("oano", employeeForm.getOano());
+		request.setAttribute("employeeNameKanji", employeeForm.getNameKanji());
+		request.setAttribute("employeeNameKana", employeeForm.getNamekana());
+		request.setAttribute("department", employeeForm.getDepartment());
+		request.setAttribute("group", employeeForm.getGroup());
 
 	}
 
@@ -148,7 +161,7 @@ public class EmployeeMstServlet extends HttpServlet {
 		// エラーメッセージ
 		request.setAttribute("errorMsg", employeeForm.getErrorMessage());
 		// 値渡し
-		setEmployeeForm(request);
+		setAttributeFromEmployeeForm(request, employeeForm);
 	}
 
 	// フォームの初期化

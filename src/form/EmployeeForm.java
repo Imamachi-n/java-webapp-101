@@ -2,6 +2,7 @@ package form;
 
 import java.util.ArrayList;
 
+import dto.Employee;
 import lombok.Getter;
 import lombok.Setter;
 import validator.BaseValidator;
@@ -53,5 +54,18 @@ public class EmployeeForm extends BaseValidator {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	// SQL実行結果から値を取得
+	public void mapSQLResult(Employee employee) {
+
+		this.setEmployee(employee.getEmployee());
+		this.setOano(employee.getOano());
+		this.setNameKanji(employee.getNameKanji());
+		this.setNamekana(employee.getNamekana());
+		this.setDepartment(employee.getDepartment());
+		this.setGroup(employee.getGroup());
+
+		return;
 	}
 }

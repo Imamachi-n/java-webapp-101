@@ -5,10 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+import dto.Employee;
 import form.EmployeeForm;
 
 public class EmployeeDAO {
@@ -41,40 +40,57 @@ public class EmployeeDAO {
 		return employeeInfo;
 	}
 
+	// 社員情報の検索
+	public Employee searchEmpolyeeById(String id, EmployeeForm employeeForm) {
+		PreparedStatement pStmt = null;
+		Employee employee = new Employee();
+
+		String sql = "SELECT * FROM pers WHERE pers_employee = ?";
+
+		// SQLの実行
+		try {
+			pStmt = con.prepareStatement(sql);
+			pStmt.setString(1, id);
+			ResultSet rs = pStmt.executeQuery();
+
+			// 対象の社員がいた場合
+			if (rs.next()) {
+				employee.getSQLResult(rs);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			employeeForm.getErrorMessage().add("社員情報の取得時に予期せぬエラーが発生しました。");
+		}
+
+		return employee;
+	}
+
 	// 社員情報の登録
 	public boolean registerEmployee(EmployeeForm employeeForm) {
 
 		PreparedStatement pStmt = null;
+		Employee employee = new Employee();
 
 		String sql = "INSERT INTO pers (pers_employee, pers_oano, pers_sei, pers_mei, pers_name, pers_namek, "
 				+ " pers_bu, pers_gr, pers_indate, pers_intime) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			pStmt = con.prepareStatement(sql);
-			pStmt.setString(1, employeeForm.getEmployee());
-			pStmt.setString(2, employeeForm.getOano());
-			pStmt.setString(3, "");
-			pStmt.setString(4, "");
-			pStmt.setString(5, employeeForm.getNameKanji());
-			pStmt.setString(6, employeeForm.getNamekana());
-			pStmt.setString(7, employeeForm.getDepartment());
-			pStmt.setString(8, employeeForm.getGroup());
-			LocalDateTime ldt = LocalDateTime.now();
-			DateTimeFormatter currentDate = DateTimeFormatter.ofPattern("yyyyMMdd");
-			DateTimeFormatter currentTime = DateTimeFormatter.ofPattern("HHmmss");
-			pStmt.setString(9, ldt.format(currentDate).toString());
-			pStmt.setString(10, ldt.format(currentTime).toString());
+			employee.setparameters(pStmt, employeeForm);
 
 			pStmt.executeUpdate();
 
 			return true;
 
 		} catch (SQLIntegrityConstraintViolationException e) {
+			e.printStackTrace();
 			employeeForm.getErrorMessage().add("入力した社員番号はすでに登録されています。");
 			return false;
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			employeeForm.getErrorMessage().add("社員情報の登録時に予期せぬエラーが発生しました。");
 			return false;
 		}
 	}
