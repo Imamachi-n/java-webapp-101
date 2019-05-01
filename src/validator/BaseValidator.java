@@ -1,6 +1,7 @@
 package validator;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,11 +14,11 @@ public class BaseValidator {
 	private boolean hasError;
 
 	// エラーメッセージ
-	private String errorMessage;
+	private ArrayList<String> errorMessage;
 
 	// コンストラクタ
 	public BaseValidator() {
-		this.errorMessage = "";
+		this.errorMessage = new ArrayList<String>();
 	}
 
 	// 桁数チェック
@@ -25,7 +26,7 @@ public class BaseValidator {
 
 		// Nullチェック
 		if(str == null || str.length() == 0) {
-			this.setErrorMessage(this.getErrorMessage() + errorMsg + "\n");
+			this.getErrorMessage().add(errorMsg);
 			this.setHasError(true);
 			return false;
 		}
@@ -37,7 +38,7 @@ public class BaseValidator {
 
 		}else {
 			// バイト数が最大値を超える場合、Falseを返す
-			this.setErrorMessage(this.getErrorMessage() + errorMsg + "\n");
+			this.getErrorMessage().add(errorMsg);
 			this.setHasError(true);
 			return false;
 

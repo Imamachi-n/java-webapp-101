@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class EmployeeDAO {
 		PreparedStatement pStmt = null;
 
 		String sql = "INSERT INTO pers (pers_employee, pers_oano, pers_sei, pers_mei, pers_name, pers_namek, "
-				+ " pers_bu, pers_gr, pers_indate, pers_intime) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ " pers_bu, pers_gr, pers_indate, pers_intime) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			pStmt = con.prepareStatement(sql);
@@ -62,11 +63,15 @@ public class EmployeeDAO {
 			DateTimeFormatter currentDate = DateTimeFormatter.ofPattern("yyyyMMdd");
 			DateTimeFormatter currentTime = DateTimeFormatter.ofPattern("HHmmss");
 			pStmt.setString(9, ldt.format(currentDate).toString());
-			pStmt.setString(9, ldt.format(currentTime).toString());
+			pStmt.setString(10, ldt.format(currentTime).toString());
 
 			pStmt.executeUpdate();
 
 			return true;
+
+		} catch (SQLIntegrityConstraintViolationException e) {
+			employeeForm.getErrorMessage().add("入力した社員番号はすでに登録されています。");
+			return false;
 
 		} catch (SQLException e) {
 			e.printStackTrace();

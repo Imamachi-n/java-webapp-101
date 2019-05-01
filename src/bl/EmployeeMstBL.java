@@ -23,6 +23,7 @@ public class EmployeeMstBL {
 			// 社員情報の取得
 			EmployeeDAO dao = new EmployeeDAO(con);
 			employeeInfo = dao.searchEmpolyees();
+			employeeInfo.add(0, "--- 社員を選択 ---");
 
 		} catch (Exception e) {
 			e.printStackTrace();

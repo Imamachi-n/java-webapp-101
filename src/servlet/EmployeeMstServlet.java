@@ -72,52 +72,44 @@ public class EmployeeMstServlet extends HttpServlet {
 			String execution = request.getParameter("execute");
 			if (execution == null) {
 				// エラー発生時
-				// TODO: ERROR
+				employeeForm.getErrorMessage().add("不正なフォーム入力が発生しました。");
 
-			} else if (execution.equals("list")) {
-				// 一覧表示時
-				System.out.println("OK!");
+			}else {
+				switch(execution) {
+					// 一覧表示時
+					case "list":
+						System.out.println("!!");
+						break;
 
-			} else if (execution.equals("select")) {
-				// 社員選択時
+					// 社員選択時
+					case "select":
+						request.setAttribute("employeeName", request.getParameter("employeeName"));
+						// ボタン切り替えフラグを立てる
+						request.setAttribute("editFlg", true);
+						break;
 
-			} else if (execution.equals("register")) {
-				// 登録時
+					// 登録時
+					case "register":
+						// フォームオブジェクトへの値渡し
+						setEmployeeForm(request, employeeForm);
 
-				// 値の取得
-				employeeForm.setEmployee(request.getParameter("employeeId"));
-				employeeForm.setOano(request.getParameter("oano"));
-				employeeForm.setNameKanji(request.getParameter("employeeNameKanji"));
-				employeeForm.setNamekana(request.getParameter("employeeNameKana"));
-				employeeForm.setDepartment(request.getParameter("department"));
-				employeeForm.setGroup(request.getParameter("group"));
+						// バリデータによる値のチェック
+						if (!employeeForm.validateInputData()) break;
+						if (!bl.registerEmpolyee(employeeForm)) break;
+						break;
 
-				// バリデータによる値のチェック
-				if (!employeeForm.validateInputData()) {
-					// エラーメッセージ
-					request.setAttribute("errorMsg", employeeForm.getErrorMessage());
-					// 値渡し
-					setEmployeeForm(request);
+					// 更新時
+					case "update":
+						break;
 
-					// 社員マスタページへ遷移
-					request.getRequestDispatcher("employeeMst.jsp").forward(request, response);
-					return;
-
+					// 削除時
+					case "delete":
+						break;
 				}
-
-				bl.registerEmpolyee(employeeForm);
-				System.out.println("OK");
-
-			} else if (execution.equals("update")) {
-				// 更新時
-
-			} else if (execution.equals("delete")) {
-				// 削除時
-
 			}
 
-			// ボタン切り替えフラグを立てる
-			request.setAttribute("editFlg", true);
+			// エラーメッセージの表示
+			if (employeeForm.getErrorMessage().size() > 0) setErrorMsg(request, employeeForm);
 
 			// 社員マスタページへ遷移
 			request.getRequestDispatcher("employeeMst.jsp").forward(request, response);
@@ -137,6 +129,26 @@ public class EmployeeMstServlet extends HttpServlet {
 		request.setAttribute("department", request.getParameter("department"));
 		request.setAttribute("group", request.getParameter("group"));
 
+	}
+
+	// フォームオブジェクトへの値渡し
+	protected void setEmployeeForm(HttpServletRequest request, EmployeeForm employeeForm) {
+		// 値の取得
+		employeeForm.setEmployee(request.getParameter("employeeId"));
+		employeeForm.setOano(request.getParameter("oano"));
+		employeeForm.setNameKanji(request.getParameter("employeeNameKanji"));
+		employeeForm.setNamekana(request.getParameter("employeeNameKana"));
+		employeeForm.setDepartment(request.getParameter("department"));
+		employeeForm.setGroup(request.getParameter("group"));
+	}
+
+	// エラー発生時
+	protected void setErrorMsg(HttpServletRequest request, EmployeeForm employeeForm) {
+
+		// エラーメッセージ
+		request.setAttribute("errorMsg", employeeForm.getErrorMessage());
+		// 値渡し
+		setEmployeeForm(request);
 	}
 
 	// フォームの初期化
