@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 
@@ -39,77 +41,147 @@
 
     <hr style="margin-top: 5px; margin-bottom: 15px;" />
 
-    <div class="row">
-      <div class="col-lg-3">
-        <div class="form-group">
-          <label for="catId">申請番号: 0343</label>
-          <input class="form-control" type="hidden" name="catId" />
-        </div>
+    <!-- 情報メッセージ -->
+    <c:if test="${not empty infoMsg}">
+      <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="閉じる"><span
+            aria-hidden="true">×</span></button>
+        <ul>
+          <c:forEach items="${ requestScope.infoMsg }" var="infoMsg">
+            <li>
+              <c:out value="${infoMsg}" />
+            </li>
+          </c:forEach>
+        </ul>
       </div>
-    </div>
+    </c:if>
 
-    <div class="row">
-      <div class="col-lg-3">
-        <div class="form-group">
-          <label for="catId">申請者（社員番号）</label>
-          <input class="form-control" type="text" id="catId" size="4" placeholder="例）0343" />
-        </div>
+    <!-- エラーメッセージ -->
+    <c:if test="${not empty errorMsg}">
+      <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="閉じる"><span
+            aria-hidden="true">×</span></button>
+        <ul>
+          <c:forEach items="${ requestScope.errorMsg }" var="errorMsg">
+            <li>
+              <c:out value="${errorMsg}" />
+            </li>
+          </c:forEach>
+        </ul>
       </div>
-    </div>
+    </c:if>
 
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="form-group">
-          <label for="catId">使用目的</label>
-          <textarea class="form-control" id="textarea" placeholder="例）リフレッシュスペースの物品購入のため。"></textarea>
-        </div>
+    <form method="post" action="applicationForm">
+      <div class="pull-right">
+        <button type="submit" class="btn btn-primary btn-lg">
+          申請する
+        </button>
       </div>
-    </div>
 
-    <!-- Table -->
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="form-group">
-          <label for="catId">物品一覧</label>
-          <table class="table table-striped table-hover table-bordered">
-            <thead>
-              <tr>
-                <th>選択</th>
-                <th>No.</th>
-                <th>品番・色</th>
-                <th>ASKUL申込番号</th>
-                <th>カタログページ数</th>
-                <th>数量</th>
-                <th>単価（税抜）</th>
-                <th>合計（税抜）</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>あ</td>
-                <td>1</td>
-                <td>ベージュ</td>
-                <td>123456789</td>
-                <td>0343</td>
-                <td>2</td>
-                <td>1200</td>
-                <td>2400</td>
-              </tr>
-              <tr>
-                <td>あ</td>
-                <td>1</td>
-                <td>ベージュ</td>
-                <td>123456789</td>
-                <td>0343</td>
-                <td>2</td>
-                <td>1200</td>
-                <td>2400</td>
-              </tr>
-            </tbody>
-          </table>
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="form-group">
+            <label for="catId">申請番号: 0343</label>
+            <input class="form-control" type="hidden" name="catId" />
+          </div>
         </div>
       </div>
-    </div>
+
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="form-group">
+            <label for="catId">申請者（社員番号）</label>
+            <input class="form-control" type="text" id="catId" size="4" placeholder="例）0343" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="catId">使用目的</label>
+            <textarea class="form-control" id="textarea" placeholder="例）リフレッシュスペースの物品購入のため。"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>物品選択</label>
+        <div class="input-group col-lg-8">
+          <select class="form-control" name="group" id="group">
+            <c:forEach items="${ groupList }" var="groupItem">
+              <option <c:if test="${groupItem == group}">selected</c:if>>
+                <c:out value="${groupItem}" />
+              </option>
+            </c:forEach>
+          </select>
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-info">追加する</button>
+          </span>
+        </div>
+
+        <div class="pull-right">
+          <h4>合計金額
+            <c:out value="12,000" />円</h4>
+        </div>
+      </div>
+
+      <br />
+
+      <!-- Table -->
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <label for="catId">物品一覧</label>
+            <table class="table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>選択</th>
+                  <th>No.</th>
+                  <th>品番・色</th>
+                  <th>ASKUL申込番号</th>
+                  <th>カタログページ数</th>
+                  <th>数量</th>
+                  <th>単価（税抜）</th>
+                  <th>合計（税抜）</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>あ</td>
+                  <td>1</td>
+                  <td>ベージュ</td>
+                  <td>123456789</td>
+                  <td>0343</td>
+                  <td>2</td>
+                  <td>1200</td>
+                  <td>2400</td>
+                </tr>
+                <tr>
+                  <td>あ</td>
+                  <td>1</td>
+                  <td>ベージュ</td>
+                  <td>123456789</td>
+                  <td>0343</td>
+                  <td>2</td>
+                  <td>1200</td>
+                  <td>2400</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <button type="submit" class="btn btn-danger">
+            削除する
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

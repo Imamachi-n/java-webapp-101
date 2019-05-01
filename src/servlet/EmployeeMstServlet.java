@@ -73,7 +73,7 @@ public class EmployeeMstServlet extends HttpServlet {
 
 			}else {
 				switch(execution) {
-					// 一覧表示時
+					// 一覧表示時 --------------------------------------------------------------
 					case "list":
 						request.setAttribute("employeeList", bl.searchAllEmpolyees());
 
@@ -81,7 +81,7 @@ public class EmployeeMstServlet extends HttpServlet {
 						request.getRequestDispatcher("employeeMstList.jsp").forward(request, response);
 						return;
 
-					// 社員選択時
+					// 社員選択時 --------------------------------------------------------------
 					case "select":
 						// 社員情報の取得
 						String employeeName = request.getParameter("employeeName");
@@ -99,7 +99,7 @@ public class EmployeeMstServlet extends HttpServlet {
 
 						break;
 
-					// 登録時
+					// 登録時 --------------------------------------------------------------
 					case "register":
 						// フォームオブジェクトへの値渡し
 						setEmployeeForm(request, employeeForm);
@@ -112,7 +112,7 @@ public class EmployeeMstServlet extends HttpServlet {
 
 						break;
 
-					// 更新時
+					// 更新時 --------------------------------------------------------------
 					case "update":
 						// フォームオブジェクトへの値渡し
 						setEmployeeForm(request, employeeForm);
@@ -131,7 +131,7 @@ public class EmployeeMstServlet extends HttpServlet {
 
 						break;
 
-					// 削除時
+					// 削除時 --------------------------------------------------------------
 					case "delete":
 						// フォームオブジェクトへの値渡し
 						setEmployeeForm(request, employeeForm);
@@ -148,6 +148,8 @@ public class EmployeeMstServlet extends HttpServlet {
 
 			// エラーメッセージの表示
 			if (employeeForm.getErrorMessage().size() > 0) setErrorMsg(request, employeeForm);
+			// 情報メッセージの表示
+			if (employeeForm.getInfoMessage().size() > 0) setInfoMsg(request, employeeForm);
 
 			// コンボボックスのデータ取得
 			initComboBox(request, bl, employeeForm);
@@ -181,6 +183,13 @@ public class EmployeeMstServlet extends HttpServlet {
 		employeeForm.setNamekana(request.getParameter("employeeNameKana"));
 		employeeForm.setDepartment(request.getParameter("department"));
 		employeeForm.setGroup(request.getParameter("group"));
+	}
+
+	// 情報メッセージ表示時
+	protected void setInfoMsg(HttpServletRequest request, EmployeeForm employeeForm) {
+
+		// 情報メッセージ
+		request.setAttribute("infoMsg", employeeForm.getInfoMessage());
 	}
 
 	// エラー発生時

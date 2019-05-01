@@ -16,9 +16,13 @@ public class BaseValidator {
 	// エラーメッセージ
 	private ArrayList<String> errorMessage;
 
+	// 情報メッセージ
+	private ArrayList<String> infoMessage;
+
 	// コンストラクタ
 	public BaseValidator() {
 		this.errorMessage = new ArrayList<String>();
+		this.infoMessage = new ArrayList<String>();
 	}
 
 	// 桁数チェック

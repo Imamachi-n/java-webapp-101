@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 
@@ -20,6 +22,23 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+  <script>
+    // コンボボックスで選択した社員情報の取得
+    function getList() {
+      var form = this.document.forms.form1;
+      var input = this.document.createElement('input');
+      input.setAttribute('name', 'execute');
+      input.setAttribute('value', 'select');
+      form.appendChild(input);
+      form.submit();
+    }
+
+    // Disabled状態のテキストボックスを一時的に解除し、POST送信時に変数として対象の入力値を渡す
+    function unDisabled() {
+      document.getElementById("employeeId").disabled = false;
+      return true;
+    }
+  </script>
 </head>
 
 <body style="padding-top: 65px">
@@ -39,8 +58,63 @@
 
     <hr style="margin-top: 5px; margin-bottom: 15px;" />
 
+    <!-- 情報メッセージ -->
+    <c:if test="${not empty infoMsg}">
+      <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="閉じる"><span
+            aria-hidden="true">×</span></button>
+        <ul>
+          <c:forEach items="${ requestScope.infoMsg }" var="errorMsg">
+            <li>
+              <c:out value="${infoMsg}" />
+            </li>
+          </c:forEach>
+        </ul>
+      </div>
+    </c:if>
+
+
+    <!-- エラーメッセージ -->
+    <c:if test="${not empty errorMsg}">
+      <div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="閉じる"><span
+            aria-hidden="true">×</span></button>
+        <ul>
+          <c:forEach items="${ requestScope.errorMsg }" var="errorMsg">
+            <li>
+              <c:out value="${errorMsg}" />
+            </li>
+          </c:forEach>
+        </ul>
+      </div>
+    </c:if>
+
     <!-- 入力フォーム -->
-    <form method="post" action="item">
+    <form method="post" action="item" id="form1" name="form1">
+      <!-- 処理の選択 -->
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="form-group">
+            <button type="submit" class="btn btn-info" name="execute" value="list">一覧表示</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-3">
+          <div class="form-group">
+            <label for="itemName">物品 - 選択</label>
+            <select class="form-control" name="itemName" id="itemName" onchange="getList()">
+              <c:forEach items="${ itemInfo }" var="itemItem">
+                <option <c:if test="${itemItem == itemName}">selected</c:if>>
+                  <c:out value="${itemItem}" />
+                </option>
+              </c:forEach>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div class="row">
         <div class="col-lg-3">
           <div class="form-group">
@@ -84,8 +158,19 @@
         </div>
       </div>
 
-      <button type="submit" class="btn btn-primary">登録する</button>
-      <button type="reset" class="btn btn-light">リセット</button>
+      <c:choose>
+        <c:when test="${not empty editFlg and editFlg}">
+          <button type="submit" class="btn btn-primary" name="execute" value="update"
+            onclick="unDisabled()">更新する</button>
+          <button type="submit" class="btn btn-danger" name="execute" value="delete"
+            onclick="unDisabled()">削除する</button>
+        </c:when>
+        <c:otherwise>
+          <button type="submit" class="btn btn-primary" name="execute" value="register">
+            登録する
+          </button>
+        </c:otherwise>
+      </c:choose>
     </form>
   </div>
 

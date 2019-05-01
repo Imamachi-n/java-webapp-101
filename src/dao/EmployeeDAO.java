@@ -108,6 +108,7 @@ public class EmployeeDAO {
 
 			pStmt.executeUpdate();
 
+			employeeForm.getInfoMessage().add("社員情報の登録に成功しました。");
 			return true;
 
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -137,6 +138,7 @@ public class EmployeeDAO {
 
 			pStmt.executeUpdate();
 
+			employeeForm.getInfoMessage().add("社員情報の更新に成功しました。");
 			return true;
 
 		} catch (SQLException e) {
@@ -159,6 +161,7 @@ public class EmployeeDAO {
 
 			pStmt.executeUpdate();
 
+			employeeForm.getInfoMessage().add("社員情報の削除に成功しました。");
 			return true;
 
 		} catch (SQLException e) {

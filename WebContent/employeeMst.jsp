@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-pageEncoding="UTF-8"%> <%@ taglib prefix="c"
-uri="http://java.sun.com/jsp/jstl/core"%>
+pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
@@ -23,6 +23,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   <script>
+    // コンボボックスで選択した社員情報の取得
     function getList() {
       var form = this.document.forms.form1;
       var input = this.document.createElement('input');
@@ -57,6 +58,21 @@ uri="http://java.sun.com/jsp/jstl/core"%>
 
     <hr style="margin-top: 5px; margin-bottom: 15px;" />
 
+    <!-- 情報メッセージ -->
+    <c:if test="${not empty infoMsg}">
+      <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="閉じる"><span
+            aria-hidden="true">×</span></button>
+        <ul>
+          <c:forEach items="${ requestScope.infoMsg }" var="infoMsg">
+            <li>
+              <c:out value="${infoMsg}" />
+            </li>
+          </c:forEach>
+        </ul>
+      </div>
+    </c:if>
+
     <!-- エラーメッセージ -->
     <c:if test="${not empty errorMsg}">
       <div class="alert alert-warning alert-dismissible" role="alert">
@@ -78,7 +94,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       <div class="row">
         <div class="col-lg-3">
           <div class="form-group">
-            <button type="submit" class="btn btn-primary" name="execute" value="list">一覧表示</button>
+            <button type="submit" class="btn btn-info" name="execute" value="list">一覧表示</button>
           </div>
         </div>
       </div>
