@@ -78,8 +78,11 @@ public class EmployeeMstServlet extends HttpServlet {
 				switch(execution) {
 					// 一覧表示時
 					case "list":
-						System.out.println("!!");
-						break;
+						request.setAttribute("employeeList", bl.searchAllEmpolyees());
+
+						// 社員一覧ページへ遷移
+						request.getRequestDispatcher("employeeMstList.jsp").forward(request, response);
+						return;
 
 					// 社員選択時
 					case "select":
@@ -109,10 +112,26 @@ public class EmployeeMstServlet extends HttpServlet {
 
 						// 登録
 						if (!bl.registerEmpolyee(employeeForm)) break;
+
 						break;
 
 					// 更新時
 					case "update":
+						// フォームオブジェクトへの値渡し
+						setEmployeeForm(request, employeeForm);
+
+						// バリデータによる値のチェック
+						if (!employeeForm.validateInputData()) {
+							request.setAttribute("editFlg", true);
+							break;
+						}
+
+						// 登録
+						if (!bl.updateEmpolyee(employeeForm)) {
+							request.setAttribute("editFlg", true);
+							break;
+						}
+
 						break;
 
 					// 削除時

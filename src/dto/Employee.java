@@ -51,7 +51,7 @@ public class Employee {
 	}
 
 	// 登録内容の格納
-	public void setparameters(PreparedStatement pStmt, EmployeeForm employeeForm) throws SQLException {
+	public void setRegisterParameters(PreparedStatement pStmt, EmployeeForm employeeForm) throws SQLException {
 
 		pStmt.setString(1, employeeForm.getEmployee());
 		pStmt.setString(2, employeeForm.getOano());
@@ -66,6 +66,26 @@ public class Employee {
 		DateTimeFormatter currentTime = DateTimeFormatter.ofPattern("HHmmss");
 		pStmt.setString(9, ldt.format(currentDate).toString());
 		pStmt.setString(10, ldt.format(currentTime).toString());
+
+		return;
+	}
+
+	// 更新内容の格納
+	public void setUpdateParameters(PreparedStatement pStmt, EmployeeForm employeeForm) throws SQLException {
+
+		pStmt.setString(1, employeeForm.getOano());
+		pStmt.setString(2, "");
+		pStmt.setString(3, "");
+		pStmt.setString(4, employeeForm.getNameKanji());
+		pStmt.setString(5, employeeForm.getNamekana());
+		pStmt.setString(6, employeeForm.getDepartment());
+		pStmt.setString(7, employeeForm.getGroup());
+		LocalDateTime ldt = LocalDateTime.now();
+		DateTimeFormatter currentDate = DateTimeFormatter.ofPattern("yyyyMMdd");
+		DateTimeFormatter currentTime = DateTimeFormatter.ofPattern("HHmmss");
+		pStmt.setString(8, ldt.format(currentDate).toString());
+		pStmt.setString(9, ldt.format(currentTime).toString());
+		pStmt.setString(10, employeeForm.getEmployee());
 
 		return;
 	}
