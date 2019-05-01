@@ -48,6 +48,11 @@ public class EmployeeForm extends BaseValidator {
 			checkByte(this.getGroup(), 30, "グループ名は全角15文字以内で入力してください。");
 			if(this.isHasError()) return false;
 
+			// 数値チェック
+			isNumber(this.getEmployee(), "社員番号は数字で入力してください。");
+			isNumber(this.getOano(), "OA番号は数値で入力してください。");
+			if(this.isHasError()) return false;
+
 			return true;
 
 		}catch(Exception e) {

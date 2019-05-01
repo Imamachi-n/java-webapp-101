@@ -140,35 +140,68 @@ public class EmployeeMstBL {
 	}
 
 	// 社員情報の更新
-		public boolean updateEmpolyee(EmployeeForm employeeForm) {
-			Connection con = null;
-			boolean result = false;
+	public boolean updateEmpolyee(EmployeeForm employeeForm) {
+		Connection con = null;
+		boolean result = false;
 
+		try {
+			// DBへの接続
+			ConnectionManager cm = ConnectionManager.getConnectionManager();
+			con = cm.getConnection();
+
+			// 社員情報の取得
+			EmployeeDAO dao = new EmployeeDAO(con);
+			result = dao.updateEmployee(employeeForm);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			employeeForm.getErrorMessage().add("DB接続時に予期せぬエラーが発生しました。");
+			result = false;
+
+		} finally {
 			try {
-				// DBへの接続
-				ConnectionManager cm = ConnectionManager.getConnectionManager();
-				con = cm.getConnection();
-
-				// 社員情報の取得
-				EmployeeDAO dao = new EmployeeDAO(con);
-				result = dao.updateEmployee(employeeForm);
-
-			} catch (Exception e) {
-				e.printStackTrace();
-				employeeForm.getErrorMessage().add("DB接続時に予期せぬエラーが発生しました。");
-				result = false;
-
-			} finally {
-				try {
-					if (con != null) {
-						con.close();
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-					employeeForm.getErrorMessage().add("DB切断時に予期せぬエラーが発生しました。");
-					result = false;
+				if (con != null) {
+					con.close();
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				employeeForm.getErrorMessage().add("DB切断時に予期せぬエラーが発生しました。");
+				result = false;
 			}
-			return result;
 		}
+		return result;
+	}
+
+	// 社員情報の削除
+	public boolean deleteEmpolyee(EmployeeForm employeeForm) {
+		Connection con = null;
+		boolean result = false;
+
+		try {
+			// DBへの接続
+			ConnectionManager cm = ConnectionManager.getConnectionManager();
+			con = cm.getConnection();
+
+			// 社員情報の取得
+			EmployeeDAO dao = new EmployeeDAO(con);
+			result = dao.deleteEmployee(employeeForm);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			employeeForm.getErrorMessage().add("DB接続時に予期せぬエラーが発生しました。");
+			result = false;
+
+		} finally {
+			try {
+				if (con != null) {
+					con.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				employeeForm.getErrorMessage().add("DB切断時に予期せぬエラーが発生しました。");
+				result = false;
+			}
+		}
+		return result;
+	}
 }

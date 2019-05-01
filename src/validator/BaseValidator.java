@@ -46,7 +46,7 @@ public class BaseValidator {
 	}
 
 	// 数値チェック
-	public boolean isNumber(String str) {
+	public boolean isNumber(String str, String errorMsg) {
 
 		try {
 			// 数値の場合
@@ -55,6 +55,8 @@ public class BaseValidator {
 
 	    } catch (NumberFormatException e) {
 	    	// 数値でない場合
+	    	this.getErrorMessage().add(errorMsg);
+			this.setHasError(true);
 	        return false;
 
 	    }

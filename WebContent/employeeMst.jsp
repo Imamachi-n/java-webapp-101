@@ -32,6 +32,7 @@ uri="http://java.sun.com/jsp/jstl/core"%>
       form.submit();
     }
 
+    // Disabled状態のテキストボックスを一時的に解除し、POST送信時に変数として対象の入力値を渡す
     function unDisabled() {
       document.getElementById("employeeId").disabled = false;
       return true;
@@ -169,7 +170,8 @@ uri="http://java.sun.com/jsp/jstl/core"%>
         <c:when test="${not empty editFlg and editFlg}">
           <button type="submit" class="btn btn-primary" name="execute" value="update"
             onclick="unDisabled()">更新する</button>
-          <button type="submit" class="btn btn-danger" name="execute" value="delete">削除する</button>
+          <button type="submit" class="btn btn-danger" name="execute" value="delete"
+            onclick="unDisabled()">削除する</button>
         </c:when>
         <c:otherwise>
           <button type="submit" class="btn btn-primary" name="execute" value="register">

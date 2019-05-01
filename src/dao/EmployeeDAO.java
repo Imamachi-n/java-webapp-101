@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import dto.Employee;
@@ -19,7 +21,7 @@ public class EmployeeDAO {
 		this.con = con;
 	}
 
-	// 社員情報の検索
+	// 社員・選択情報の検索
 	public ArrayList<String> searchEmpolyees() {
 		PreparedStatement pStmt = null;
 		ArrayList<String> employeeInfo = new ArrayList<>();
@@ -40,7 +42,7 @@ public class EmployeeDAO {
 		return employeeInfo;
 	}
 
-	// 社員情報の検索
+	// 一覧表示用のすべての社員情報の検索
 	public ArrayList<Employee> searchAllEmpolyees() {
 		PreparedStatement pStmt = null;
 		ArrayList<Employee> employeeList = new ArrayList<Employee>();
@@ -66,7 +68,7 @@ public class EmployeeDAO {
 		return employeeList;
 	}
 
-	// 社員情報の検索
+	// 特定の社員情報の検索
 	public Employee searchEmpolyeeById(String id, EmployeeForm employeeForm) {
 		PreparedStatement pStmt = null;
 		Employee employee = new Employee();
@@ -96,14 +98,13 @@ public class EmployeeDAO {
 	public boolean registerEmployee(EmployeeForm employeeForm) {
 
 		PreparedStatement pStmt = null;
-		Employee employee = new Employee();
 
 		String sql = "INSERT INTO pers (pers_employee, pers_oano, pers_sei, pers_mei, pers_name, pers_namek, "
 				+ " pers_bu, pers_gr, pers_indate, pers_intime) " + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			pStmt = con.prepareStatement(sql);
-			employee.setRegisterParameters(pStmt, employeeForm);
+			this.setRegisterParameters(pStmt, employeeForm);
 
 			pStmt.executeUpdate();
 
@@ -125,7 +126,6 @@ public class EmployeeDAO {
 	public boolean updateEmployee(EmployeeForm employeeForm) {
 
 		PreparedStatement pStmt = null;
-		Employee employee = new Employee();
 
 		String sql = "UPDATE pers SET pers_oano = ?, pers_sei = ?, pers_mei = ?, "
 				+ " pers_name = ?, pers_namek = ?, pers_bu = ?, pers_gr = ?, pers_update = ?, pers_uptime = ? "
@@ -133,7 +133,7 @@ public class EmployeeDAO {
 
 		try {
 			pStmt = con.prepareStatement(sql);
-			employee.setUpdateParameters(pStmt, employeeForm);
+			this.setUpdateParameters(pStmt, employeeForm);
 
 			pStmt.executeUpdate();
 
@@ -144,5 +144,76 @@ public class EmployeeDAO {
 			employeeForm.getErrorMessage().add("社員情報の更新時に予期せぬエラーが発生しました。");
 			return false;
 		}
+	}
+
+	// 社員情報の削除
+	public boolean deleteEmployee(EmployeeForm employeeForm) {
+
+		PreparedStatement pStmt = null;
+
+		String sql = "DELETE FROM pers WHERE pers_employee = ?";
+
+		try {
+			pStmt = con.prepareStatement(sql);
+			this.setDeleteParameters(pStmt, employeeForm);
+
+			pStmt.executeUpdate();
+
+			return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			employeeForm.getErrorMessage().add("社員情報の削除時に予期せぬエラーが発生しました。");
+			return false;
+		}
+	}
+
+
+	// 登録内容の設定
+	public void setRegisterParameters(PreparedStatement pStmt, EmployeeForm employeeForm) throws SQLException {
+
+		pStmt.setString(1, employeeForm.getEmployee());
+		pStmt.setString(2, employeeForm.getOano());
+		pStmt.setString(3, "");
+		pStmt.setString(4, "");
+		pStmt.setString(5, employeeForm.getNameKanji());
+		pStmt.setString(6, employeeForm.getNamekana());
+		pStmt.setString(7, employeeForm.getDepartment());
+		pStmt.setString(8, employeeForm.getGroup());
+		LocalDateTime ldt = LocalDateTime.now();
+		DateTimeFormatter currentDate = DateTimeFormatter.ofPattern("yyyyMMdd");
+		DateTimeFormatter currentTime = DateTimeFormatter.ofPattern("HHmmss");
+		pStmt.setString(9, ldt.format(currentDate).toString());
+		pStmt.setString(10, ldt.format(currentTime).toString());
+
+		return;
+	}
+
+	// 更新内容の設定
+	public void setUpdateParameters(PreparedStatement pStmt, EmployeeForm employeeForm) throws SQLException {
+
+		pStmt.setString(1, employeeForm.getOano());
+		pStmt.setString(2, "");
+		pStmt.setString(3, "");
+		pStmt.setString(4, employeeForm.getNameKanji());
+		pStmt.setString(5, employeeForm.getNamekana());
+		pStmt.setString(6, employeeForm.getDepartment());
+		pStmt.setString(7, employeeForm.getGroup());
+		LocalDateTime ldt = LocalDateTime.now();
+		DateTimeFormatter currentDate = DateTimeFormatter.ofPattern("yyyyMMdd");
+		DateTimeFormatter currentTime = DateTimeFormatter.ofPattern("HHmmss");
+		pStmt.setString(8, ldt.format(currentDate).toString());
+		pStmt.setString(9, ldt.format(currentTime).toString());
+		pStmt.setString(10, employeeForm.getEmployee());
+
+		return;
+	}
+
+	// 削除内容の設定
+	public void setDeleteParameters(PreparedStatement pStmt, EmployeeForm employeeForm) throws SQLException {
+
+		pStmt.setString(1, employeeForm.getEmployee());
+
+		return;
 	}
 }

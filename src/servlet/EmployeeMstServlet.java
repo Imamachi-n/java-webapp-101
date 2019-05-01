@@ -66,9 +66,6 @@ public class EmployeeMstServlet extends HttpServlet {
 		EmployeeForm employeeForm = new EmployeeForm();	// 社員フォームクラスのインスタンス化
 
 		try {
-			// コンボボックスのデータ取得
-			initComboBox(request, bl, employeeForm);
-
 			String execution = request.getParameter("execute");
 			if (execution == null) {
 				// エラー発生時
@@ -93,11 +90,11 @@ public class EmployeeMstServlet extends HttpServlet {
 						// 社員情報の取得時にエラーが発生した場合
 						if (employeeForm.getErrorMessage().size() > 0) break;
 
-						// 値渡し
+						// JSPへの値渡し
 						request.setAttribute("employeeName", employeeName);
 						setAttributeFromEmployeeForm(request, employeeForm);
 
-						// ボタン切り替えフラグを立てる(デフォルト値でない場合)
+						// 更新・削除ボタンを表示する(デフォルト値でない場合)
 						if(!employeeName.equals(EmployeeMstBL.DEFAULT_ITEM)) request.setAttribute("editFlg", true);
 
 						break;
@@ -122,13 +119,13 @@ public class EmployeeMstServlet extends HttpServlet {
 
 						// バリデータによる値のチェック
 						if (!employeeForm.validateInputData()) {
-							request.setAttribute("editFlg", true);
+							request.setAttribute("editFlg", true);	// 更新・削除ボタンを表示する
 							break;
 						}
 
-						// 登録
+						// 更新
 						if (!bl.updateEmpolyee(employeeForm)) {
-							request.setAttribute("editFlg", true);
+							request.setAttribute("editFlg", true);	// 更新・削除ボタンを表示する
 							break;
 						}
 
@@ -136,12 +133,24 @@ public class EmployeeMstServlet extends HttpServlet {
 
 					// 削除時
 					case "delete":
+						// フォームオブジェクトへの値渡し
+						setEmployeeForm(request, employeeForm);
+
+						// 削除
+						if (!bl.deleteEmpolyee(employeeForm)) {
+							request.setAttribute("editFlg", true);	// 更新・削除ボタンを表示する
+							break;
+						}
+
 						break;
 				}
 			}
 
 			// エラーメッセージの表示
 			if (employeeForm.getErrorMessage().size() > 0) setErrorMsg(request, employeeForm);
+
+			// コンボボックスのデータ取得
+			initComboBox(request, bl, employeeForm);
 
 			// 社員マスタページへ遷移
 			request.getRequestDispatcher("employeeMst.jsp").forward(request, response);
